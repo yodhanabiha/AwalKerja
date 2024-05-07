@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +41,7 @@ import com.nabiha.awalkerja.ui.component.CenterContent
 import com.nabiha.awalkerja.R
 import com.nabiha.awalkerja.model.apirequest.LoginRequest
 import com.nabiha.awalkerja.ui.component.CPasswordOutlinedTextField
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -70,8 +72,10 @@ private fun LoginScreen(
         mutableStateOf(false)
     }
 
+    val buttonPressed = remember { mutableStateOf(false) }
+
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -126,7 +130,7 @@ private fun LoginScreen(
                 }
             )
             Text(
-                text = "Lupa Password!",
+                text = "Lupa Password?",
                 style = MaterialTheme.typography.labelSmall,
                 color = Color(0xFF555555),
                 modifier = Modifier.padding(top = 12.dp, bottom = 16.dp)
@@ -134,16 +138,21 @@ private fun LoginScreen(
 
             Button(
                 onClick = {
+                    buttonPressed.value = true
                     viewModel.viewModelScope.launch {
                         viewModel.fetchLogin(
                             login = LoginRequest(
                                 email, password
                             )
                         )
+                        delay(1000L)
+                        buttonPressed.value = false
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(Color(0xFFE7E7E7)),
+                colors = ButtonDefaults.buttonColors(
+                      if (buttonPressed.value) MaterialTheme.colorScheme.primary else Color(0xFFE7E7E7),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 contentPadding = PaddingValues(0.dp)
 
@@ -151,7 +160,7 @@ private fun LoginScreen(
                 Text(
                     text = "Log In!",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Color(0xFF817F7F),
+                    color = if (buttonPressed.value) Color.White else Color(0xFF817F7F),
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
