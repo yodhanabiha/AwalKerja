@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nabiha.optix"
+    namespace = "com.nabiha.awalkerja"
     compileSdk = 34
 
     defaultConfig {

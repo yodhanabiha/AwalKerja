@@ -1,5 +1,5 @@
 object ProjectConfig {
-    const val appId = "com.nabiha.optix"
+    const val appId = "com.nabiha.awalkerja"
     const val minSdk = 24
     const val compileSdk = 34
     const val targetSdk = 34
