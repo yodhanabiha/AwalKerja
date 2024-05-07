@@ -2,14 +2,11 @@ package com.nabiha.awalkerja.features.authFeatures.login
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,7 +18,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,17 +29,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.nabiha.awalkerja.ui.component.COutlinedTextField
 import com.nabiha.awalkerja.ui.component.CenterContent
-import com.nabiha.awalkerja.ui.theme.AwalKerjaTheme
 import com.nabiha.awalkerja.R
+import com.nabiha.awalkerja.model.apirequest.LoginRequest
 import com.nabiha.awalkerja.ui.component.CPasswordOutlinedTextField
+import kotlinx.coroutines.launch
 
 @Composable
-private fun LoginScreen() {
+internal fun LoginScreenRoute(
+    viewModel: LoginViewModel = hiltViewModel(),
+    navController: NavHostController,
+) {
+    val loginUiState by viewModel.loginUiState.collectAsStateWithLifecycle()
+    LoginScreen(navController, loginUiState, viewModel)
+}
+
+@Composable
+private fun LoginScreen(
+    navController: NavHostController,
+    loginUiState: LoginUiState,
+    viewModel: LoginViewModel
+) {
 
     var email by remember {
         mutableStateOf("")
@@ -120,7 +133,15 @@ private fun LoginScreen() {
             )
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    viewModel.viewModelScope.launch {
+                        viewModel.fetchLogin(
+                            login = LoginRequest(
+                                email, password
+                            )
+                        )
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color(0xFFE7E7E7)),
                 shape = RoundedCornerShape(16.dp),
@@ -187,25 +208,14 @@ private fun LoginScreen() {
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 14.sp,
                     color = Color.Black,
-                    textDecoration = TextDecoration.Underline
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.clickable {
+                        /*TODO*/
+                    }
                 )
             }
 
         }
 
-
-    }
-}
-
-@Composable
-@Preview
-private fun LoginScreenPrv() {
-    AwalKerjaTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            LoginScreen()
-        }
     }
 }

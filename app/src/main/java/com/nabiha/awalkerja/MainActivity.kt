@@ -11,14 +11,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.nabiha.awalkerja.data.datastore.DatastoreManager
+import com.nabiha.awalkerja.data.datastore.PreferenceDatastore
 import com.nabiha.awalkerja.navigation.AppNavigation
 import com.nabiha.awalkerja.ui.theme.AwalKerjaTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var preferenceDatastore: PreferenceDatastore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AwalKerjaTheme {
+                DatastoreManager.init(this)
                 val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),

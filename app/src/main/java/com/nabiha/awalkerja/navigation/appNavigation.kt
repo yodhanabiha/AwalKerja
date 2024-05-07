@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.nabiha.awalkerja.common.NavRoute
 import com.nabiha.awalkerja.features.authFeatures.landing.landingScreen
+import com.nabiha.awalkerja.features.authFeatures.login.loginScreen
 
 @Composable
 fun AppNavigation(
@@ -24,6 +25,7 @@ fun AppNavigation(
             modifier = modifier.padding(innerPadding)
         ) {
             landingScreen(navController)
+            loginScreen(navController)
         }
     }
 }

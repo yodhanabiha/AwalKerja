@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nabiha.awalkerja.ui.theme.AwalKerjaTheme
 import com.nabiha.awalkerja.R
+import com.nabiha.awalkerja.features.authFeatures.login.navigateToLoginScreen
 
 @Composable
 internal fun LandingScreenRoute(
@@ -73,7 +74,7 @@ private fun LandingScreen(navController: NavHostController) {
                 Text(text = "Lanjut", style = MaterialTheme.typography.titleMedium)
             }
             OutlinedButton(
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigateToLoginScreen() },
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
                 shape = RoundedCornerShape(16.dp),
                 border = BorderStroke(1.dp, Color.Black)
